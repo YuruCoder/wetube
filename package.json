@@ -1,7 +1,6 @@
 {
   "name": "wetube",
   "version": "1.0.0",
-  "description": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hojunkim1/wetube.git"
@@ -12,7 +11,7 @@
   },
   "homepage": "https://github.com/hojunkim1/wetube#readme",
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "dependencies": {
     "express": "^4.17.1"
