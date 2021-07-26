@@ -1,15 +1,22 @@
-# Wetube
+# Wetube Clone!
 
-/ -> Home
+## Global URL
+
+/ -> Home, Trending video
 /join -> Join
 /login -> Log in
 /search -> Search
 
-/users/edit -> Edit Profile
-/users/delete -> Delete Profile
+## Users URL
 
-/videos/watch -> Watch Video
-/videos/edit -> Edit Video
-/videos/delete -> Delete Video
-/videos/comments -> Comment on a video
-/videos/comments/delete -> Delete a comment of a video
+/users/:id -> See user
+/users/logout -> Log out
+/users/edit -> Edit my profile
+/users/delete -> Delete my profile
+
+## Video URL
+
+/videos/:id -> See video
+/videos/:id/edit -> Edit video
+/videos/:id/delete -> Delete video
+/videos/upload -> Upload video
