@@ -4,11 +4,11 @@ import { trending } from "../controllers/videoController";
 
 const globalRouter = express.Router();
 
-// User
+// Global Routers of Users
 globalRouter.get("/join", join);
 globalRouter.get("/login", login);
 
-// Video
+// Global Routers of Videos
 globalRouter.get("/", trending);
 
 export default globalRouter;
