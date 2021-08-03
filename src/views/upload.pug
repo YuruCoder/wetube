@@ -3,4 +3,8 @@ extend base
 block content
     form(method="POST")
         input(name="title", placeholder="Title", type="text", required)
+        input(name="description", placeholder="Description", type="text", maxlength="200" ,required)
+        input(name="hashtags", placeholder="Hashtags, seperated by commma.", type="text", required)
         input(value="Upload Video", type="submit")
+        if errorMessage
+            span=errorMessage

@@ -5,15 +5,18 @@ import {
   watch,
   getEdit,
   postEdit,
+  deleteVideo,
 } from "../controllers/videoController";
 
 const videoRouter = express.Router();
 
-// Global Video Routers
+// Public Video Routers
 videoRouter.route("/upload").get(getUpload).post(postUpload);
 
 // Personal Video Routers
-videoRouter.get("/:id(\\d+)", watch);
-videoRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
+const HEXA = "([0-9a-f]{24})";
+videoRouter.get(`/:id${HEXA}`, watch);
+videoRouter.route(`/:id${HEXA}/edit`).get(getEdit).post(postEdit);
+videoRouter.get(`/:id${HEXA}/delete`, deleteVideo);
 
 export default videoRouter;
