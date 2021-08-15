@@ -11,6 +11,7 @@ export const getJoin = (req, res) => {
 export const postJoin = async (req, res) => {
   const pageTitle = "Join";
   const { name, email, username, password, password2, location } = req.body;
+
   // Error Check
   const exists = await User.exists({ $or: [{ username }, { email }] });
   if (password !== password2) {
@@ -24,6 +25,7 @@ export const postJoin = async (req, res) => {
       errorMessage: "This username/email is already taken.",
     });
   }
+
   // Create Account
   try {
     await User.create({
@@ -49,14 +51,16 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
   const pageTitle = "Log in";
   const { username, password } = req.body;
+
   // Check Username
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "An account with this username does not exists.",
     });
   }
+
   // Check Password
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
@@ -65,6 +69,8 @@ export const postLogin = async (req, res) => {
       errorMessage: "Wrong password",
     });
   }
+
+  // Login
   req.session.loggedIn = true;
   req.session.user = user;
   return res.redirect("/");
@@ -72,13 +78,17 @@ export const postLogin = async (req, res) => {
 
 // Public User Controllers
 
-export const logout = (req, res) => res.send("Log out");
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
 
 export const edit = (req, res) => res.send("Edit User");
 
 export const remove = (req, res) => res.send("Remove User");
 
 export const startGithubLogin = (req, res) => {
+  // Send user to Github login page
   const baseURL = "https://github.com/login/oauth/authorize";
   const config = {
     client_id: process.env.GH_CLIENT,
@@ -91,6 +101,7 @@ export const startGithubLogin = (req, res) => {
 };
 
 export const finishGithubLogin = async (req, res) => {
+  // Use Github OAuth API and get TOKEN
   const baseURL = "https://github.com/login/oauth/access_token";
   const config = {
     client_id: process.env.GH_CLIENT,
@@ -99,17 +110,18 @@ export const finishGithubLogin = async (req, res) => {
   };
   const params = new URLSearchParams(config).toString();
   const finalURL = `${baseURL}?${params}`;
-
   const tokenRequest = await (
     await fetch(finalURL, {
       method: "POST",
       headers: { Accept: "application/json" },
     })
   ).json();
+
+  // Github login if TOKEN Exist
   if ("access_token" in tokenRequest) {
+    // Check Token exist and get data from github account
     const { access_token } = tokenRequest;
     const apiURL = "https://api.github.com";
-    // Get Data from Github
     const userData = await (
       await fetch(`${apiURL}/user`, {
         headers: { Authorization: `token ${access_token}` },
@@ -120,21 +132,21 @@ export const finishGithubLogin = async (req, res) => {
         headers: { Authorization: `token ${access_token}` },
       })
     ).json();
-    // Extract Useful Data from Github data
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
+
+    // Check Error
     if (!emailObj) {
       // Error message
       return res.redirect("/login");
     }
-    const existingUser = await User.findOne({ email: emailObj.email });
-    if (existingUser) {
-      req.session.loggedIn = true;
-      req.session.user = existingUser;
-      return res.redirect("/");
-    } else {
-      const user = await User.create({
+
+    // Access DB and Find or Create Account
+    let user = await User.findOne({ email: emailObj.email });
+    if (!user) {
+      user = await User.create({
+        avatarUrl: userData.avatar_url,
         name: userData.name,
         username: userData.login,
         email: emailObj.email,
@@ -142,10 +154,10 @@ export const finishGithubLogin = async (req, res) => {
         socialOnly: true,
         location: userData.location,
       });
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect("/");
     }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
