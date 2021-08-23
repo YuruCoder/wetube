@@ -10,13 +10,15 @@ html(lang="en")
                         a(href="/") Home
                     li
                         a(href="/search") Search
-                    li
-                        a(href="/videos/upload") Upload Video
                     if loggedIn
+                        li
+                            a(href="/videos/upload") Upload Video
                         li
                             a(href="users/logout") Log out
                         li
                             a(href="/my-profile") #{loggedInUser.name}'s Profile
+                        li
+                            a(href="/users/edit") Edit Profile
                     else
                         li
                             a(href="/login") Log in
