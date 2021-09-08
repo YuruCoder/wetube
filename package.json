@@ -1,15 +1,12 @@
 {
   "name": "wetube",
   "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hojunkim1/wetube.git"
-  },
+  "description": "Wetube",
+  "main": "init.js",
+  "repository": "https://github.com/hojunkim1/wetube.git",
+  "author": "hojunkim1 <76956067+hojunkim1@users.noreply.github.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/hojunkim1/wetube/issues"
-  },
-  "homepage": "https://github.com/hojunkim1/wetube#readme",
+  "private": true,
   "scripts": {
     "dev": "nodemon --exec babel-node src/init.js"
   },
@@ -22,7 +19,6 @@
     "mongoose": "^6.0.5",
     "morgan": "^1.10.0",
     "node-fetch": "^3.0.0",
-    "npm": "^7.21.0",
     "pug": "^3.0.2"
   },
   "devDependencies": {
