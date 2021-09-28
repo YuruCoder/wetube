@@ -1,4 +1,3 @@
-console.log(process.env.COOKIE_SECRET);
 import "dotenv/config";
 import "./db";
 import "./models/Video";
