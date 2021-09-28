@@ -1,4 +1,4 @@
-# modules
+# compiled output
 /node_modules
 
 # env file
@@ -8,5 +8,5 @@
 package-lock.json
 yarn.lock
 
-# system file
+# OS
 .DS_Store
