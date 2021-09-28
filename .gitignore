@@ -1,5 +1,12 @@
-.DS_Store
+# modules
 /node_modules
+
+# env file
 .env
+
+# lock file
 package-lock.json
 yarn.lock
+
+# system file
+.DS_Store
