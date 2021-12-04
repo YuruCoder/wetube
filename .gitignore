@@ -1,12 +1,6 @@
-# compiled output
+# dependencies
 /node_modules
 
-# env file
-.env
-
-# lock file
-package-lock.json
-yarn.lock
-
-# OS
+# misc
 .DS_Store
+.env

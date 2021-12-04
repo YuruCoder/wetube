@@ -1,30 +1,28 @@
 {
-  "name": "wetube",
-  "version": "1.0.0",
+  "name": "wetube-clone",
+  "version": "0.1.0",
   "description": "wetube clone project",
   "main": "init.js",
   "repository": "https://github.com/hojunkim1/wetube.git",
-  "author": "hojunkim1 <76956067+hojunkim1@users.noreply.github.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "dev": "nodemon --exec babel-node src/init.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "connect-mongo": "^4.4.1",
+    "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "mongoose": "^5.13.9",
+    "express-session": "^1.17.2",
+    "mongoose": "^5.13.13",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.2",
+    "node-fetch": "^2.6.6",
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/node": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
-    "nodemon": "^2.0.7"
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "nodemon": "^2.0.15"
   }
 }
