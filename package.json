@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "wetube clone project",
   "main": "init.js",
-  "repository": "https://github.com/hojunkim1/wetube.git",
+  "repository": "https://github.com/hojunkim1/wetube-clone.git",
+  "author": "Hojun Kim <76956067+hojunkim1@users.noreply.github.com>",
   "license": "MIT",
+  "private": false,
   "scripts": {
     "dev": "nodemon --exec babel-node src/init.js"
   },
