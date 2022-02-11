@@ -1,6 +1,6 @@
 {
   "name": "wetube-clone",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "wetube clone project",
   "main": "init.js",
   "repository": "https://github.com/hojunkim1/wetube-clone.git",

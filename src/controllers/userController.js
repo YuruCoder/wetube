@@ -84,7 +84,7 @@ export const logout = (req, res) => {
 };
 
 export const getEdit = (req, res) => {
-  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+  return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 };
 
 export const postEdit = async (req, res) => {
@@ -106,6 +106,18 @@ export const postEdit = async (req, res) => {
   );
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = (req, res) => {
+  // TODO: send notification to user
+  return res.redirect("/");
 };
 
 export const remove = (req, res) => res.send("Remove User");
