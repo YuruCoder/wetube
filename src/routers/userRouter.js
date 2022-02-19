@@ -12,7 +12,7 @@ import {
 import {
   protectorMiddleware,
   publicOnlyMiddleware,
-  uploadMiddleware,
+  uploadAvatarMiddleware,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -23,7 +23,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadMiddleware.single("avatar"), postEdit);
+  .post(uploadAvatarMiddleware.single("avatar"), postEdit);
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)

@@ -1,10 +1,12 @@
 extend ../base
 
 block content
-    form(method="POST")
-        input(name="title", placeholder="Title", type="text", required)
-        input(name="description", placeholder="Description", type="text", maxlength="200" ,required)
-        input(name="hashtags", placeholder="Hashtags, seperated by commma.", type="text", required)
-        input(value="Upload Video", type="submit")
+    form(method="POST", enctype="multipart/form-data")
+        label(for="video") Video File
+        input(type="file", accept="video/*", name="video", id="video", required)
+        input(type="text", name="title", placeholder="Title", required)
+        input(type="text", name="description", placeholder="Description", maxlength="200", required)
+        input(type="text", name="hashtags", placeholder="Hashtags, seperated by commma.", required)
+        input(type="submit", value="Upload Video")
         if errorMessage
             span=errorMessage
