@@ -1,5 +1,5 @@
 {
-  "name": "wetube-clone",
+  "name": "wetube",
   "version": "0.1.0",
   "description": "wetube clone project",
   "main": "init.js",
@@ -8,22 +8,23 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "babel-node": "babel-node --presets='@babel/preset-env'",
+    "dev": "nodemon --exec npm run babel-node -- src/init.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
-    "dotenv": "^14.3.2",
-    "express": "^4.17.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "mongoose": "^6.1.8",
+    "mongoose": "^6.2.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.7",
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.17.5",
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
     "nodemon": "^2.0.15"
