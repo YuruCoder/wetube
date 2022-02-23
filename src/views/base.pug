@@ -16,7 +16,7 @@ html(lang="en")
                         li
                             a(href="/users/logout") Log out
                         li
-                            a(href="/my-profile") #{loggedInUser.name}'s Profile
+                            a(href=`/users/${loggedInUser._id}`) My Profile
                         li
                             a(href="/users/edit") Edit Profile
                     else

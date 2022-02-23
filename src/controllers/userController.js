@@ -4,9 +4,7 @@ import fetch from "node-fetch";
 
 // Root Controllers
 
-export const getJoin = (req, res) => {
-  return res.render("join", { pageTitle: "Join" });
-};
+export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 
 export const postJoin = async (req, res) => {
   const pageTitle = "Join";
@@ -41,12 +39,12 @@ export const postJoin = async (req, res) => {
       errorMessage: error._message,
     });
   }
+
   return res.redirect("/login");
 };
 
-export const getLogin = (req, res) => {
-  return res.render("login", { pageTitle: "Log in" });
-};
+export const getLogin = (req, res) =>
+  res.render("login", { pageTitle: "Log in" });
 
 export const postLogin = async (req, res) => {
   const pageTitle = "Log in";
@@ -54,21 +52,19 @@ export const postLogin = async (req, res) => {
 
   // Check Username
   const user = await User.findOne({ username, socialOnly: false });
-  if (!user) {
+  if (!user)
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "An account with this username does not exists.",
     });
-  }
 
   // Check Password
   const ok = await bcrypt.compare(password, user.password);
-  if (!ok) {
+  if (!ok)
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "Wrong password",
     });
-  }
 
   // Login
   req.session.loggedIn = true;
@@ -83,9 +79,8 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const getEdit = (req, res) => {
-  return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
-};
+export const getEdit = (req, res) =>
+  res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 
 export const postEdit = async (req, res) => {
   const {
@@ -95,6 +90,7 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
+
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
@@ -106,14 +102,13 @@ export const postEdit = async (req, res) => {
     },
     { new: true }
   );
+
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
 
 export const getChangePassword = (req, res) => {
-  if (req.session.user.socialOnly === true) {
-    return res.redirect("/");
-  }
+  if (req.session.user.socialOnly === true) return res.redirect("/");
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
@@ -125,19 +120,20 @@ export const postChangePassword = async (req, res) => {
     body: { oldPassword, newPassword, newPasswordConfirmation },
   } = req;
   const user = await User.findById(_id);
+
   const ok = await bcrypt.compare(oldPassword, user.password);
-  if (!ok) {
+  if (!ok)
     return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "The current password is incorrect",
     });
-  }
-  if (newPassword !== newPasswordConfirmation) {
+
+  if (newPassword !== newPasswordConfirmation)
     return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "New password confirmation does not match.",
     });
-  }
+
   user.password = newPassword;
   await user.save();
   return res.redirect("/");
@@ -195,14 +191,11 @@ export const finishGithubLogin = async (req, res) => {
     );
 
     // Check Error
-    if (!emailObj) {
-      // Error message
-      return res.redirect("/login");
-    }
+    if (!emailObj) return res.redirect("/login");
 
     // Access DB and Find or Create Account
     let user = await User.findOne({ email: emailObj.email });
-    if (!user) {
+    if (!user)
       user = await User.create({
         avatarUrl: userData.avatar_url,
         name: userData.name,
@@ -212,7 +205,7 @@ export const finishGithubLogin = async (req, res) => {
         socialOnly: true,
         location: userData.location,
       });
-    }
+
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
@@ -223,4 +216,14 @@ export const finishGithubLogin = async (req, res) => {
 
 // Personal User Controllers
 
-export const see = (req, res) => res.send("See User");
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  if (!user) return res.render("404");
+
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+  });
+};
