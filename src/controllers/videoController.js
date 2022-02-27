@@ -1,3 +1,4 @@
+import User from "../models/User";
 import Video from "../models/Video";
 
 // Root Controllers
@@ -11,13 +12,12 @@ export const search = async (req, res) => {
   const { keyword } = req.query;
 
   let videos = [];
-  if (keyword) {
+  if (keyword)
     videos = await Video.find({
       title: {
         $regex: new RegExp(keyword, "i"),
       },
     });
-  }
 
   return res.render("search", { pageTitle: "Search", videos });
 };
@@ -29,17 +29,24 @@ export const getUpload = (req, res) =>
 
 export const postUpload = async (req, res) => {
   const {
+    session: {
+      user: { _id },
+    },
     file: { path },
     body: { title, description, hashtags },
   } = req;
 
   try {
-    await Video.create({
+    const newVideo = await Video.create({
       path,
       title,
       description,
       hashtags: Video.formatHashtags(hashtags),
+      owner: _id,
     });
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
     return res.redirect("/");
   } catch (error) {
     return res.status(400).render("videos/upload", {
@@ -53,7 +60,7 @@ export const postUpload = async (req, res) => {
 
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  const video = await Video.findById(id).populate("owner");
 
   if (!video)
     return res.status(404).render("404", { pageTitle: "Video not found." });

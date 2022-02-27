@@ -1,6 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
+import Video from "../models/Video";
 
 // Root Controllers
 
@@ -12,17 +13,16 @@ export const postJoin = async (req, res) => {
 
   // Error Check
   const exists = await User.exists({ $or: [{ username }, { email }] });
-  if (password !== password2) {
+  if (password !== password2)
     return res.render("join", {
       pageTitle,
       errorMessage: "Password confirmation does not match.",
     });
-  } else if (exists) {
+  else if (exists)
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "This username/email is already taken.",
     });
-  }
 
   // Create Account
   try {
@@ -218,9 +218,10 @@ export const finishGithubLogin = async (req, res) => {
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("videos");
 
-  if (!user) return res.render("404");
+  if (!user)
+    return res.status(404).render("404", { pageTitle: "User not found" });
 
   return res.render("users/profile", {
     pageTitle: user.name,
