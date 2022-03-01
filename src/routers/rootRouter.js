@@ -1,8 +1,8 @@
 import express from "express";
 import {
   getJoin,
-  postJoin,
   getLogin,
+  postJoin,
   postLogin,
 } from "../controllers/userController";
 import { home, search } from "../controllers/videoController";

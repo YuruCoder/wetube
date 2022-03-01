@@ -2,6 +2,11 @@
 /node_modules
 /uploads
 
+# build
+/assets
+
+# env
+/.env
+
 # misc
-.DS_Store
-.env
+/.DS_Store

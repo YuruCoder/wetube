@@ -1,13 +1,13 @@
 import express from "express";
 import {
-  logout,
-  getEdit,
-  postEdit,
-  startGithubLogin,
   finishGithubLogin,
-  see,
   getChangePassword,
+  getEdit,
+  logout,
   postChangePassword,
+  postEdit,
+  see,
+  startGithubLogin,
 } from "../controllers/userController";
 import {
   protectorMiddleware,
