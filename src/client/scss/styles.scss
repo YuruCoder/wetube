@@ -1,5 +1,39 @@
-@import "./_variables";
+// Config
+
+@import "./config/_reset.scss";
+@import "./config/_variables.scss";
+
+// Components
+
+@import "./components/header.scss";
+@import "./components/footer.scss";
+@import "./components/video.scss";
+
+// Screens
+
+@import "./screens/404.scss";
+@import "./screens/home.scss";
+@import "./screens/join.scss";
+@import "./screens/login.scss";
+@import "./screens/search.scss";
+
+@import "./screens/users/profile.scss";
+@import "./screens/users/edit-profile.scss";
+@import "./screens/users/change-password.scss";
+
+@import "./screens/videos/watch.scss";
+@import "./screens/videos/upload.scss";
+@import "./screens/videos/edit.scss";
+
+// Defaults
 
 body {
-  background-color: $bg-color;
+  font-family: $font-family;
+  background-color: $white;
+  color: $real-black;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
