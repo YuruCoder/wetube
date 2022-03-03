@@ -31,6 +31,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  transition: all 0.3s ease-in-out;
   h1 {
     font-size: $large;
     font-weight: 500;
@@ -41,7 +42,6 @@
     color: $default-grey;
   }
   &:hover {
-    transform: translateY(-10px);
-    transition: all 0.3s ease-in-out;
+    bottom: 65px;
   }
 }
