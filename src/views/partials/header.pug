@@ -1,11 +1,14 @@
 header
-    a(href='/')
-        i.fab.fa-youtube
     nav
         ul
             li
-                a(href="/search") Search
+                a(href='/')
+                    i.fab.fa-youtube
+                    span wetube
             if loggedIn
+                li(class="logged-in")
+                li
+                    a(href="/search") Search
                 li
                     a(href="/videos/upload") Upload Video
                 li
@@ -15,6 +18,9 @@ header
                 li
                     a(href="/users/edit") Edit Profile
             else
+                li(class="logged-out")
+                li
+                    a(href="/search") Search
                 li
                     a(href="/login") Log in
                 li

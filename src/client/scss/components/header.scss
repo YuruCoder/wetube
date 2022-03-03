@@ -1,0 +1,45 @@
+header {
+  width: 100%;
+  height: 60px;
+  background-color: $real-white;
+  font-size: $medium;
+  font-weight: 500;
+  position: fixed;
+  top: 0;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+header > nav {
+  width: 100%;
+
+  ul {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+
+    li {
+      grid-row: span 1;
+      color: $default-grey;
+      display: flex;
+      justify-content: center;
+
+      &:hover {
+        color: $hover-grey;
+      }
+
+      &:first-child {
+        grid-column: 2 / span 1;
+      }
+    }
+  }
+}
+
+.logged-in {
+  grid-column: 3 / span 4;
+}
+
+.logged-out {
+  grid-column: 3 / span 6;
+}

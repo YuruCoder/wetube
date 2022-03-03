@@ -1,0 +1,47 @@
+.videos-container {
+  display: grid;
+  grid-template-columns: repeat(3, 360px);
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.video-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.thumbnail {
+  background-color: $grey;
+  width: 360px;
+  height: 240px;
+  border-radius: 10px;
+}
+
+.video-info {
+  background-color: white;
+  width: 320px;
+  height: 100px;
+  border-radius: 10px;
+  box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  bottom: 55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  h1 {
+    font-size: $large;
+    font-weight: 500;
+  }
+  li {
+    font-size: $medium;
+    font-weight: 400;
+    color: $default-grey;
+  }
+  &:hover {
+    transform: translateY(-10px);
+    transition: all 0.3s ease-in-out;
+  }
+}

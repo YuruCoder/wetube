@@ -25,15 +25,30 @@
 @import "./screens/videos/upload.scss";
 @import "./screens/videos/edit.scss";
 
-// Defaults
+// Base
 
 body {
   font-family: $font-family;
   background-color: $white;
   color: $real-black;
+  min-height: 100vh;
+  display: grid;
+  grid-template:
+    ". main ." auto
+    "footer footer footer" auto / 1fr 8fr 1fr;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+main {
+  grid-area: main;
+  margin-top: 70px;
+  display: grid;
+}
+
+footer {
+  grid-area: footer;
 }

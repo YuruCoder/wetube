@@ -1,0 +1,16 @@
+footer {
+  background-color: $real-white;
+  height: 80vh;
+  margin-top: 70px;
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  grid-template-rows: 3fr 3fr 1fr;
+
+  span {
+    grid-column: 2 / span 1;
+    grid-row: 3 / span 1;
+    font-size: $medium;
+    font-weight: 500;
+    color: $default-grey;
+  }
+}
