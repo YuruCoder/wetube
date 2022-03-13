@@ -32,15 +32,24 @@
   justify-content: space-around;
   align-items: center;
   transition: all 0.3s ease-in-out;
+
   h1 {
     font-size: $large;
     font-weight: 500;
   }
-  li {
-    font-size: $medium;
-    font-weight: 400;
-    color: $default-grey;
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    li {
+      margin: 0px 5px;
+      font-size: $small;
+      font-weight: 400;
+      color: $default-grey;
+    }
   }
+
   &:hover {
     bottom: 65px;
   }
