@@ -1,17 +1,14 @@
 extends base
 
 block content
-    form(method="POST")
-        input(type="text", name="name", placeholder="Name", required)
-        input(type="email", name="email", placeholder="Email", required)
-        input(type="text", name="username", placeholder="Username", required)
-        input(type="password", name="password", placeholder="Password", required)
-        input(type="password", name="password2", placeholder="Confirm Password", required)
-        input(type="text", name="location", placeholder="Location", required)
-        input(type="submit", value="Join")
-        if errorMessage
-            span=errorMessage
-    hr
-    div
-        span Already have an account? 
-        a(href="/login") Log in now &rarr;
+    div(class="join-container")
+        form(method="POST")
+            input(type="text", name="name", placeholder="Name", required)
+            input(type="email", name="email", placeholder="Email", required)
+            input(type="text", name="username", placeholder="Username", required)
+            input(type="password", name="password", placeholder="Password", required)
+            input(type="password", name="password2", placeholder="Confirm Password", required)
+            input(type="text", name="location", placeholder="Location", required)
+            input(type="submit", value="Join")
+            if errorMessage
+                span=errorMessage
