@@ -1,14 +1,20 @@
 extends ../base
 
 block content
-    video(src=`/${video.path}`, controls)
-    div
-        p=video.description
-        small=video.createdAt
-    div
-        small Uploaded by 
-            a(href=`/users/${video.owner._id}`)=video.owner.name
-    if String(video.owner._id) === String(loggedInUser._id)
-        a(href=`${video.id}/edit`) Edit Video &rarr;
-        br
-        a(href=`${video.id}/delete`) Delete Video &rarr;
+    div(class="watch")
+        div(class="watch-info")
+            div(class="watch-video-user")
+                img(src=`/${video.owner.avatarUrl}`)
+                div
+                    span Uploaded by
+                    a(href=`/users/${video.owner._id}`) #{video.owner.name}
+            div(class="watch-video-details")
+                p=video.description
+            if String(video.owner._id) === String(loggedInUser._id)
+                div(class="watch-video-actions")
+                    a(href=`${video.id}/edit`) Edit Video &rarr;
+                    br
+                    a(href=`${video.id}/delete`) Delete Video &rarr;
+        div(class="watch-video")
+            video(src=`/${video.path}`, controls)
+            small Created at : #{video.createdAt}

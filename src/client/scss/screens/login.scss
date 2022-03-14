@@ -1,12 +1,12 @@
-.login-container {
-  @extend %container;
+.login {
+  @extend %form-container;
 
   form {
     @extend %form;
   }
 
   input {
-    @extend %input;
+    @extend %form-input;
 
     &:nth-child(3) {
       background-color: $blue;

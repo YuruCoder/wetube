@@ -1,12 +1,12 @@
-.join-container {
-  @extend %container;
+.join {
+  @extend %form-container;
 
   form {
     @extend %form;
   }
 
   input {
-    @extend %input;
+    @extend %form-input;
 
     &:nth-child(7) {
       background-color: $blue;
