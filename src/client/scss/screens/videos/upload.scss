@@ -1,0 +1,18 @@
+.upload {
+  @extend %form-container;
+
+  form {
+    @extend %form;
+  }
+
+  input {
+    @extend %form-input;
+
+    &:nth-child(6) {
+      background-color: $blue;
+      margin-top: 30px;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+}

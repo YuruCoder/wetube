@@ -1,0 +1,18 @@
+.edit-profile {
+  @extend %form-container;
+
+  form {
+    @extend %form;
+  }
+
+  input {
+    @extend %form-input;
+
+    &:nth-child(7) {
+      background-color: $blue;
+      margin-top: 30px;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+}

@@ -12,6 +12,7 @@
 @import "./components/header.scss";
 @import "./components/footer.scss";
 @import "./components/video.scss";
+@import "./components/page-title.scss";
 
 // Screens
 
@@ -19,7 +20,6 @@
 @import "./screens/login.scss";
 @import "./screens/search.scss";
 
-@import "./screens/users/profile.scss";
 @import "./screens/users/edit-profile.scss";
 @import "./screens/users/change-password.scss";
 
@@ -53,14 +53,4 @@ body {
   footer {
     grid-area: footer;
   }
-}
-
-.page-title {
-  font-size: $title;
-  font-weight: bold;
-  height: 30vh;
-  margin-bottom: 10vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

@@ -1,15 +1,16 @@
 extends ../base
 
 block content
-    img(src=`/${loggedInUser.avatarUrl}`)
-    form(method="POST", enctype="multipart/form-data")
-        label(for="avatar") Avatar
-        input(type="file", accept="image/*", name="avatar" id="avatar")
-        input(type="text", name="name", placeholder="Name", value=loggedInUser.name, required)
-        input(type="email", name="email", placeholder="Email", value=loggedInUser.email, required)
-        input(type="text", name="username", placeholder="Username", value=loggedInUser.username, required)
-        input(type="text", name="location", placeholder="Location", value=loggedInUser.location, required)
-        input(type="submit", value="Update Profile")
-        if !loggedInUser.socialOnly
-            hr
-            a(href="change-password") Change Password &rarr;
+    div(class="edit-profile")
+        img(src=`/${loggedInUser.avatarUrl}`)
+        form(method="POST", enctype="multipart/form-data")
+            label(for="avatar") Avatar
+            input(type="file", accept="image/*", name="avatar" id="avatar")
+            input(type="text", name="name", placeholder="Name", value=loggedInUser.name, required)
+            input(type="email", name="email", placeholder="Email", value=loggedInUser.email, required)
+            input(type="text", name="username", placeholder="Username", value=loggedInUser.username, required)
+            input(type="text", name="location", placeholder="Location", value=loggedInUser.location, required)
+            input(type="submit", value="Update Profile")
+            if !loggedInUser.socialOnly
+                hr
+                a(href="change-password") Change Password &rarr;
