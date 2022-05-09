@@ -1,27 +1,31 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
+import { Request, Response } from "express";
 
 // Root Controllers
 
-export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
+export const getJoin = (req: Request, res: Response) => {
+  return res.render("join", { pageTitle: "Join" });
+};
 
-export const postJoin = async (req, res) => {
+export const postJoin = async (req: Request, res: Response) => {
   const pageTitle = "Join";
   const { name, email, username, password, password2, location } = req.body;
 
   // Error Check
   const exists = await User.exists({ $or: [{ username }, { email }] });
-  if (password !== password2)
+  if (password !== password2) {
     return res.render("join", {
       pageTitle,
       errorMessage: "Password confirmation does not match.",
     });
-  else if (exists)
+  } else if (exists) {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "This username/email is already taken.",
     });
+  }
 
   // Create Account
   try {
@@ -32,7 +36,7 @@ export const postJoin = async (req, res) => {
       password,
       location,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(400).render("join", {
       pageTitle: "Join",
       errorMessage: error._message,
@@ -42,28 +46,31 @@ export const postJoin = async (req, res) => {
   return res.redirect("/login");
 };
 
-export const getLogin = (req, res) =>
-  res.render("login", { pageTitle: "Log in" });
+export const getLogin = (req: Request, res: Response) => {
+  return res.render("login", { pageTitle: "Log in" });
+};
 
-export const postLogin = async (req, res) => {
+export const postLogin = async (req: Request, res: Response) => {
   const pageTitle = "Log in";
   const { username, password } = req.body;
 
   // Check Username
   const user = await User.findOne({ username, socialOnly: false });
-  if (!user)
+  if (!user) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "An account with this username does not exists.",
     });
+  }
 
   // Check Password
   const ok = await bcrypt.compare(password, user.password);
-  if (!ok)
+  if (!ok) {
     return res.status(400).render("login", {
       pageTitle,
       errorMessage: "Wrong password",
     });
+  }
 
   // Login
   req.session.loggedIn = true;
@@ -73,15 +80,16 @@ export const postLogin = async (req, res) => {
 
 // Public User Controllers
 
-export const logout = (req, res) => {
-  req.session.destroy();
+export const logout = (req: Request, res: Response) => {
+  req.session.destroy(() => console.log("Logged out"));
   return res.redirect("/");
 };
 
-export const getEdit = (req, res) =>
-  res.render("users/edit-profile", { pageTitle: "Edit Profile" });
+export const getEdit = (req: Request, res: Response) => {
+  return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
+};
 
-export const postEdit = async (req, res) => {
+export const postEdit = async (req: Request, res: Response) => {
   const {
     session: {
       user: { _id, avatarUrl },
@@ -106,12 +114,14 @@ export const postEdit = async (req, res) => {
   return res.redirect("/users/edit");
 };
 
-export const getChangePassword = (req, res) => {
-  if (req.session.user.socialOnly === true) return res.redirect("/");
+export const getChangePassword = (req: Request, res: Response) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
-export const postChangePassword = async (req, res) => {
+export const postChangePassword = async (req: Request, res: Response) => {
   const {
     session: {
       user: { _id },
@@ -121,26 +131,30 @@ export const postChangePassword = async (req, res) => {
   const user = await User.findById(_id);
 
   const ok = await bcrypt.compare(oldPassword, user.password);
-  if (!ok)
+  if (!ok) {
     return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "The current password is incorrect",
     });
+  }
 
-  if (newPassword !== newPasswordConfirmation)
+  if (newPassword !== newPasswordConfirmation) {
     return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "New password confirmation does not match.",
     });
+  }
 
   user.password = newPassword;
   await user.save();
   return res.redirect("/");
 };
 
-export const remove = (req, res) => res.send("Remove User");
+export const remove = (req: Request, res: Response) => {
+  return res.send("Remove User");
+};
 
-export const startGithubLogin = (req, res) => {
+export const startGithubLogin = (req: Request, res: Response) => {
   // Send user to Github login page
   const baseURL = "https://github.com/login/oauth/authorize";
   const config = {
@@ -153,7 +167,7 @@ export const startGithubLogin = (req, res) => {
   return res.redirect(finalURL);
 };
 
-export const finishGithubLogin = async (req, res) => {
+export const finishGithubLogin = async (req: Request, res: Response) => {
   // Use Github OAuth API and get TOKEN
   const baseURL = "https://github.com/login/oauth/access_token";
   const config = {
@@ -186,15 +200,17 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
     const emailObj = emailData.find(
-      (email) => email.primary === true && email.verified === true
+      (email: any) => email.primary === true && email.verified === true
     );
 
     // Check Error
-    if (!emailObj) return res.redirect("/login");
+    if (!emailObj) {
+      return res.redirect("/login");
+    }
 
     // Access DB and Find or Create Account
     let user = await User.findOne({ email: emailObj.email });
-    if (!user)
+    if (!user) {
       user = await User.create({
         avatarUrl: userData.avatar_url,
         name: userData.name,
@@ -204,6 +220,7 @@ export const finishGithubLogin = async (req, res) => {
         socialOnly: true,
         location: userData.location,
       });
+    }
 
     req.session.loggedIn = true;
     req.session.user = user;
@@ -215,12 +232,13 @@ export const finishGithubLogin = async (req, res) => {
 
 // Personal User Controllers
 
-export const see = async (req, res) => {
+export const see = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await User.findById(id).populate("videos");
 
-  if (!user)
+  if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found" });
+  }
 
   return res.render("users/profile", {
     pageTitle: user.name,

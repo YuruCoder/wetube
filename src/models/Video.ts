@@ -15,7 +15,7 @@ const videoSchema = new Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
 
-videoSchema.static("formatHashtags", (hashtags) => {
+videoSchema.static("formatHashtags", (hashtags: string) => {
   return hashtags
     .split(",")
     .map((word) => (word.startsWith("#") ? word : `#${word}`));

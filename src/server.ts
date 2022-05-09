@@ -6,6 +6,7 @@ import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import { localsMiddleware } from "./middlewares";
+import mongoose from "mongoose";
 
 const app = express();
 const logger = morgan("dev");
@@ -14,9 +15,17 @@ app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
+
+declare module "express-session" {
+  interface SessionData {
+    loggedIn: boolean;
+    user: mongoose.Schema;
+  }
+}
+
 app.use(
   session({
-    secret: process.env.COOKIE_SECRET,
+    secret: JSON.stringify(process.env.COOKIE_SECRET),
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({

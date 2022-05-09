@@ -1,4 +1,4 @@
 {
   "ignore": ["webpack.config.js", "src/client/*", "assets/*"],
-  "exec": "babel-node --presets='@babel/preset-env' -- src/init.js"
+  "exec": "ts-node -- src/init.ts"
 }
