@@ -2,7 +2,24 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const videoSchema = new Schema({
+interface IVideo {
+  path: string;
+  title: string;
+  description: string;
+  createdAt: Date;
+  hashtags: string[];
+  meta: {
+    views: number;
+    rating: number;
+  };
+  owner: mongoose.Schema.Types.ObjectId;
+}
+
+interface IVideoModel extends mongoose.Model<IVideo> {
+  formatHashtags(hashtags: string): string[];
+}
+
+const videoSchema = new Schema<IVideo, IVideoModel>({
   path: { type: String, required: true },
   title: { type: String, trim: true, required: true },
   description: { type: String, trim: true, maxLength: 200, required: true },
@@ -21,6 +38,6 @@ videoSchema.static("formatHashtags", (hashtags: string) => {
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
-const Video = mongoose.model("Video", videoSchema);
+const Video = mongoose.model<IVideo, IVideoModel>("Video", videoSchema);
 
 export default Video;

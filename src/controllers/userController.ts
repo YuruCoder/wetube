@@ -89,7 +89,7 @@ export const getEdit = (req: Request, res: Response) => {
   return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 };
 
-export const postEdit = async (req: Request, res: Response) => {
+export const postEdit = async (req: any, res: Response) => {
   const {
     session: {
       user: { _id, avatarUrl },
@@ -114,14 +114,14 @@ export const postEdit = async (req: Request, res: Response) => {
   return res.redirect("/users/edit");
 };
 
-export const getChangePassword = (req: Request, res: Response) => {
+export const getChangePassword = (req: any, res: Response) => {
   if (req.session.user.socialOnly === true) {
     return res.redirect("/");
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
-export const postChangePassword = async (req: Request, res: Response) => {
+export const postChangePassword = async (req: any, res: Response) => {
   const {
     session: {
       user: { _id },
@@ -158,22 +158,22 @@ export const startGithubLogin = (req: Request, res: Response) => {
   // Send user to Github login page
   const baseURL = "https://github.com/login/oauth/authorize";
   const config = {
-    client_id: process.env.GH_CLIENT,
-    allow_signup: false,
+    client_id: JSON.stringify(process.env.GH_CLIENT),
+    allow_signup: "false",
     scope: "read:user user:email",
   };
-  const params = new URLSearchParams(config).toString();
+  const params = new URLSearchParams(config);
   const finalURL = `${baseURL}?${params}`;
   return res.redirect(finalURL);
 };
 
-export const finishGithubLogin = async (req: Request, res: Response) => {
+export const finishGithubLogin = async (req: any, res: Response) => {
   // Use Github OAuth API and get TOKEN
   const baseURL = "https://github.com/login/oauth/access_token";
   const config = {
-    client_id: process.env.GH_CLIENT,
-    client_secret: process.env.GH_SECRET,
-    code: req.query.code,
+    client_id: JSON.stringify(process.env.GH_CLIENT),
+    client_secret: JSON.stringify(process.env.GH_SECRET),
+    code: JSON.stringify(req.query.code),
   };
   const params = new URLSearchParams(config).toString();
   const finalURL = `${baseURL}?${params}`;

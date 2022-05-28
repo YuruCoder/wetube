@@ -16,10 +16,21 @@ app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
+interface IUser {
+  email: string;
+  avatarUrl: string;
+  socialOnly: boolean;
+  username: string;
+  password: string;
+  name: string;
+  location: string;
+  videos: mongoose.Schema.Types.ObjectId[];
+}
+
 declare module "express-session" {
   interface SessionData {
     loggedIn: boolean;
-    user: mongoose.Schema;
+    user: IUser;
   }
 }
 

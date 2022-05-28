@@ -3,7 +3,18 @@ import bcrypt from "bcrypt";
 
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+interface IUser {
+  email: string;
+  avatarUrl: string;
+  socialOnly: boolean;
+  username: string;
+  password: string;
+  name: string;
+  location: string;
+  videos: mongoose.Schema.Types.ObjectId[];
+}
+
+const userSchema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   avatarUrl: String,
   socialOnly: { type: Boolean, default: false },
@@ -20,6 +31,6 @@ userSchema.pre("save", async function () {
   }
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;

@@ -9,10 +9,10 @@ export const home = async (req: Request, res: Response) => {
   return res.render("home", { pageTitle: "Home", videos });
 };
 
-export const search = async (req: Request, res: Response) => {
+export const search = async (req: any, res: Response) => {
   const { keyword } = req.query;
 
-  let videos = [];
+  let videos: any[] = [];
   if (keyword) {
     videos = await Video.find({
       title: {
@@ -30,7 +30,7 @@ export const getUpload = (req: Request, res: Response) => {
   return res.render("videos/upload", { pageTitle: "Upload Video" });
 };
 
-export const postUpload = async (req: Request, res: Response) => {
+export const postUpload = async (req: any, res: Response) => {
   const {
     session: {
       user: { _id },
@@ -72,7 +72,7 @@ export const watch = async (req: Request, res: Response) => {
   return res.render("videos/watch", { pageTitle: video.title, video });
 };
 
-export const getEdit = async (req: Request, res: Response) => {
+export const getEdit = async (req: any, res: Response) => {
   const {
     params: { id },
     session: {
@@ -95,7 +95,7 @@ export const getEdit = async (req: Request, res: Response) => {
   });
 };
 
-export const postEdit = async (req: Request, res: Response) => {
+export const postEdit = async (req: any, res: Response) => {
   const {
     params: { id },
     session: {
@@ -103,6 +103,7 @@ export const postEdit = async (req: Request, res: Response) => {
     },
     body: { title, description, hashtags },
   } = req;
+
   const video = await Video.exists({ _id: id });
 
   if (!video) {
@@ -122,7 +123,7 @@ export const postEdit = async (req: Request, res: Response) => {
   return res.redirect(`/videos/${id}`);
 };
 
-export const deleteVideo = async (req: Request, res: Response) => {
+export const deleteVideo = async (req: any, res: Response) => {
   const {
     params: { id },
     session: {
