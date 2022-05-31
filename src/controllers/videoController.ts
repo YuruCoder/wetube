@@ -2,21 +2,23 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import Video from "../models/Video";
 
+type Controller = (req: Request, res: Response) => void;
+
 // Root Controllers
 
-export const home = async (req: Request, res: Response) => {
+export const home: Controller = async (req, res) => {
   const videos = await Video.find({}).sort({ createdAt: "desc" });
   return res.render("home", { pageTitle: "Home", videos });
 };
 
-export const search = async (req: any, res: Response) => {
+export const search: Controller = async (req, res) => {
   const { keyword } = req.query;
 
   let videos: any[] = [];
   if (keyword) {
     videos = await Video.find({
       title: {
-        $regex: new RegExp(keyword, "i"),
+        $regex: new RegExp(String(keyword), "i"),
       },
     });
   }
@@ -26,11 +28,11 @@ export const search = async (req: any, res: Response) => {
 
 // Public Video Controllers
 
-export const getUpload = (req: Request, res: Response) => {
+export const getUpload: Controller = (req, res) => {
   return res.render("videos/upload", { pageTitle: "Upload Video" });
 };
 
-export const postUpload = async (req: any, res: Response) => {
+export const postUpload: Controller = async (req, res) => {
   const {
     session: {
       user: { _id },
@@ -61,7 +63,7 @@ export const postUpload = async (req: any, res: Response) => {
 
 // Personal Video Controllers
 
-export const watch = async (req: Request, res: Response) => {
+export const watch: Controller = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner");
 
@@ -72,7 +74,7 @@ export const watch = async (req: Request, res: Response) => {
   return res.render("videos/watch", { pageTitle: video.title, video });
 };
 
-export const getEdit = async (req: any, res: Response) => {
+export const getEdit: Controller = async (req, res) => {
   const {
     params: { id },
     session: {
@@ -95,7 +97,7 @@ export const getEdit = async (req: any, res: Response) => {
   });
 };
 
-export const postEdit = async (req: any, res: Response) => {
+export const postEdit: Controller = async (req, res) => {
   const {
     params: { id },
     session: {
@@ -123,7 +125,7 @@ export const postEdit = async (req: any, res: Response) => {
   return res.redirect(`/videos/${id}`);
 };
 
-export const deleteVideo = async (req: any, res: Response) => {
+export const deleteVideo: Controller = async (req, res) => {
   const {
     params: { id },
     session: {

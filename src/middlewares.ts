@@ -1,33 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import multer from "multer";
 
-export const localsMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+type Middleware = (req: Request, res: Response, next: NextFunction) => void;
+
+export const localsMiddleware: Middleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
   res.locals.loggedInUser = req.session.user || {};
   res.locals.siteName = "Wetube";
   next();
 };
 
-export const protectorMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const protectorMiddleware: Middleware = (req, res, next) => {
   if (req.session.loggedIn) {
     return next();
   }
   return res.redirect("/login");
 };
 
-export const publicOnlyMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const publicOnlyMiddleware: Middleware = (req, res, next) => {
   if (!req.session.loggedIn) {
     return next();
   }

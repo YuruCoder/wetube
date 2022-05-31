@@ -3,13 +3,15 @@ import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import { Request, Response } from "express";
 
+type Controller = (req: Request, res: Response) => void;
+
 // Root Controllers
 
-export const getJoin = (req: Request, res: Response) => {
+export const getJoin: Controller = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
 };
 
-export const postJoin = async (req: Request, res: Response) => {
+export const postJoin: Controller = async (req, res) => {
   const pageTitle = "Join";
   const { name, email, username, password, password2, location } = req.body;
 
@@ -46,11 +48,11 @@ export const postJoin = async (req: Request, res: Response) => {
   return res.redirect("/login");
 };
 
-export const getLogin = (req: Request, res: Response) => {
+export const getLogin: Controller = (req, res) => {
   return res.render("login", { pageTitle: "Log in" });
 };
 
-export const postLogin = async (req: Request, res: Response) => {
+export const postLogin: Controller = async (req, res) => {
   const pageTitle = "Log in";
   const { username, password } = req.body;
 
@@ -80,16 +82,16 @@ export const postLogin = async (req: Request, res: Response) => {
 
 // Public User Controllers
 
-export const logout = (req: Request, res: Response) => {
+export const logout: Controller = (req, res) => {
   req.session.destroy(() => console.log("Logged out"));
   return res.redirect("/");
 };
 
-export const getEdit = (req: Request, res: Response) => {
+export const getEdit: Controller = (req, res) => {
   return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 };
 
-export const postEdit = async (req: any, res: Response) => {
+export const postEdit: Controller = async (req, res) => {
   const {
     session: {
       user: { _id, avatarUrl },
@@ -114,14 +116,14 @@ export const postEdit = async (req: any, res: Response) => {
   return res.redirect("/users/edit");
 };
 
-export const getChangePassword = (req: any, res: Response) => {
+export const getChangePassword: Controller = (req, res) => {
   if (req.session.user.socialOnly === true) {
     return res.redirect("/");
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
-export const postChangePassword = async (req: any, res: Response) => {
+export const postChangePassword: Controller = async (req, res) => {
   const {
     session: {
       user: { _id },
@@ -150,15 +152,15 @@ export const postChangePassword = async (req: any, res: Response) => {
   return res.redirect("/");
 };
 
-export const remove = (req: Request, res: Response) => {
+export const remove: Controller = (req, res) => {
   return res.send("Remove User");
 };
 
-export const startGithubLogin = (req: Request, res: Response) => {
+export const startGithubLogin: Controller = (req, res) => {
   // Send user to Github login page
   const baseURL = "https://github.com/login/oauth/authorize";
   const config = {
-    client_id: JSON.stringify(process.env.GH_CLIENT),
+    client_id: String(process.env.GH_CLIENT),
     allow_signup: "false",
     scope: "read:user user:email",
   };
@@ -167,13 +169,13 @@ export const startGithubLogin = (req: Request, res: Response) => {
   return res.redirect(finalURL);
 };
 
-export const finishGithubLogin = async (req: any, res: Response) => {
+export const finishGithubLogin: Controller = async (req, res) => {
   // Use Github OAuth API and get TOKEN
   const baseURL = "https://github.com/login/oauth/access_token";
   const config = {
-    client_id: JSON.stringify(process.env.GH_CLIENT),
-    client_secret: JSON.stringify(process.env.GH_SECRET),
-    code: JSON.stringify(req.query.code),
+    client_id: String(process.env.GH_CLIENT),
+    client_secret: String(process.env.GH_SECRET),
+    code: String(req.query.code),
   };
   const params = new URLSearchParams(config).toString();
   const finalURL = `${baseURL}?${params}`;
@@ -232,7 +234,7 @@ export const finishGithubLogin = async (req: any, res: Response) => {
 
 // Personal User Controllers
 
-export const see = async (req: Request, res: Response) => {
+export const see: Controller = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).populate("videos");
 

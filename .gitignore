@@ -4,6 +4,7 @@
 
 # build
 /assets
+/dist
 
 # env
 /.env
