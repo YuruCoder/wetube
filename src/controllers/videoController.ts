@@ -32,6 +32,14 @@ export const getUpload: Controller = (req, res) => {
   return res.render("videos/upload", { pageTitle: "Upload Video" });
 };
 
+declare global {
+  namespace Express {
+    interface Request {
+      file?: any;
+    }
+  }
+}
+
 export const postUpload: Controller = async (req, res) => {
   const {
     session: {
@@ -49,7 +57,7 @@ export const postUpload: Controller = async (req, res) => {
       hashtags: Video.formatHashtags(hashtags),
       owner: _id,
     });
-    const user = await User.findById(_id);
+    const user: any = await User.findById(_id);
     user.videos.push(newVideo._id);
     user.save();
     return res.redirect("/");
@@ -106,7 +114,7 @@ export const postEdit: Controller = async (req, res) => {
     body: { title, description, hashtags },
   } = req;
 
-  const video = await Video.exists({ _id: id });
+  const video: any = await Video.exists({ _id: id });
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found." });

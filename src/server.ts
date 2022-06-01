@@ -15,6 +15,13 @@ app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
+declare module "express-session" {
+  interface SessionData {
+    loggedIn: boolean;
+    user: any;
+  }
+}
+
 const sessionOptions = {
   secret: String(process.env.COOKIE_SECRET),
   resave: false,

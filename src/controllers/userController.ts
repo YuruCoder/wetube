@@ -130,7 +130,7 @@ export const postChangePassword: Controller = async (req, res) => {
     },
     body: { oldPassword, newPassword, newPasswordConfirmation },
   } = req;
-  const user = await User.findById(_id);
+  const user: any = await User.findById(_id);
 
   const ok = await bcrypt.compare(oldPassword, user.password);
   if (!ok) {
