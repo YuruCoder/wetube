@@ -22,7 +22,14 @@ declare module "express-session" {
   }
 }
 
-const sessionOptions = {
+interface IsessionOptions {
+  secret: string;
+  resave: boolean;
+  saveUninitialized: boolean;
+  store: MongoStore;
+}
+
+const sessionOptions: IsessionOptions = {
   secret: String(process.env.COOKIE_SECRET),
   resave: false,
   saveUninitialized: false,

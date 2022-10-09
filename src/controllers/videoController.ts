@@ -1,8 +1,6 @@
-import { Request, Response } from "express";
 import User from "../models/User";
 import Video from "../models/Video";
-
-type Controller = (req: Request, res: Response) => void;
+import { Controller } from "./Icontroller";
 
 // Root Controllers
 

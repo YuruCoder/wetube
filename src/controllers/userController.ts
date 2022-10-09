@@ -1,9 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
-import { Request, Response } from "express";
-
-type Controller = (req: Request, res: Response) => void;
+import { Controller } from "./Icontroller";
 
 // Root Controllers
 

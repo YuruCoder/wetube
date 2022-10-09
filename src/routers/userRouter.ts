@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   finishGithubLogin,
   getChangePassword,
@@ -15,7 +15,7 @@ import {
   uploadAvatarMiddleware,
 } from "../middlewares";
 
-const userRouter = express.Router();
+const userRouter: Router = express.Router();
 
 // Public User Routers
 userRouter.get("/logout", protectorMiddleware, logout);

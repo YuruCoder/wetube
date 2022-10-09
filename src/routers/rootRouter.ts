@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   getJoin,
   getLogin,
@@ -8,7 +8,7 @@ import {
 import { home, search } from "../controllers/videoController";
 import { publicOnlyMiddleware } from "../middlewares";
 
-const rootRouter = express.Router();
+const rootRouter: Router = express.Router();
 
 // Root Routers of Users
 rootRouter.route("/join").all(publicOnlyMiddleware).get(getJoin).post(postJoin);

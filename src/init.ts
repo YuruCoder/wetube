@@ -4,9 +4,9 @@ import "./models/Video";
 import "./models/User";
 import app from "./server";
 
-const PORT = 4000;
+const PORT: number = 4000;
 
-const handleListening = () =>
+const handleListening = (): void =>
   console.log(`✅ Server listening on port http://localhost:${PORT} 🚀`);
 
 app.listen(PORT, handleListening);
