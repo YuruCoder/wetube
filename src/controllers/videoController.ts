@@ -1,6 +1,6 @@
 import User from "../models/User";
 import Video from "../models/Video";
-import { Controller } from "./Icontroller";
+import { Controller } from "./IController";
 
 // Root Controllers
 
@@ -29,14 +29,6 @@ export const search: Controller = async (req, res) => {
 export const getUpload: Controller = (req, res) => {
   return res.render("videos/upload", { pageTitle: "Upload Video" });
 };
-
-declare global {
-  namespace Express {
-    interface Request {
-      file?: any;
-    }
-  }
-}
 
 export const postUpload: Controller = async (req, res) => {
   const {

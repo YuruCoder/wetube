@@ -1,7 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
-import { Controller } from "./Icontroller";
+import { Controller } from "./IController";
 
 // Root Controllers
 
