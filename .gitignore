@@ -6,8 +6,5 @@
 /assets
 /dist
 
-# env
-/.env
-
 # misc
 .DS_Store
