@@ -1,4 +1,0 @@
-{
-  "ignore": ["webpack.config.js", "src/client/*", "assets/*"],
-  "exec": "ts-node -- src/init.ts"
-}

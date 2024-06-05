@@ -1,10 +1,1 @@
-# dependencies
 /node_modules
-/uploads
-
-# build
-/assets
-/dist
-
-# misc
-.DS_Store
