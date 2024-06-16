@@ -5,10 +5,11 @@
   "author": "Hojun Kim",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",
