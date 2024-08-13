@@ -68,6 +68,15 @@ export const postLogin = async (req, res) => {
     });
   }
 
+  /**
+   * 회원 인증 과정 (세션 DB를 간단하게 사용할 수 있는 이유)
+   * 1. Request를 받은 서버는 자동으로 브라우저에 쿠키를 전송함
+   * 2. 쿠키를 받은 브라우저는 Request를 보낼 때 자동으로 쿠키를 포함함
+   * 3. 백엔드는 SessionDB에 접속할 수 있도록 SessionID (connect.sid) 를 쿠키에 할당함
+   * 4. SessionID 할당과 동시에 SessionDB에는 해당 ID를 키로 한 DB가 생겨남
+   * 5. 재접속 시 백엔드는 브라우저가 보낸 ID가 DB에 저장되어 있는지 확인 후 Response 를 결정
+   */
+
   req.session.loggedIn = true;
   req.session.user = user;
 
@@ -143,22 +152,17 @@ export const finishGithubLogin = async (req, res) => {
 
   let user = await User.findOne({ email: emailObj.email });
 
-  if (user) {
-    req.session.loggedIn = true;
-    req.session.user = user;
-
-    return res.redirect("/");
+  if (!user) {
+    user = await User.create({
+      name: userData.name,
+      username: userData.login,
+      email: emailObj.email,
+      password: "",
+      location: userData.location,
+      avatarUrl: userData.avatar_url,
+      socialOnly: true,
+    });
   }
-
-  user = await User.create({
-    name: userData.name,
-    username: userData.login,
-    email: emailObj.email,
-    password: "",
-    location: userData.location,
-    avatarUrl: userData.avatar_url,
-    socialOnly: true,
-  });
 
   req.session.loggedIn = true;
   req.session.user = user;
@@ -173,4 +177,69 @@ export const logout = (req, res) => {
 
 export const see = (req, res) => res.send("See User");
 
-export const edit = (req, res) => res.send("Edit User");
+export const getEdit = (req, res) => {
+  res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id, avatarUrl },
+    },
+    body: { name, email, username, location },
+    file,
+  } = req;
+
+  req.session.user = await User.findByIdAndUpdate(
+    _id,
+    {
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      email,
+      username,
+      location,
+    },
+    {
+      new: true,
+    },
+  );
+
+  res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  res.render("change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirm },
+  } = req;
+
+  const ok = await compare(oldPassword, password);
+
+  if (!ok) {
+    return res.status(400).render("change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
+  }
+
+  if (newPassword !== newPasswordConfirm) {
+    return res.status(400).render("change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match the confirmation",
+    });
+  }
+
+  const user = await User.findById(_id);
+  user.password = newPassword;
+  await user.save();
+
+  req.session.user.password = user.password;
+
+  res.redirect("/users/logout");
+};
