@@ -1,13 +1,15 @@
-extends base
+extends ../base
 
 block content
-  h4 Update Video
-  form(method="POST")
+  if errorMessage
+    span= errorMessage
+  form(method="POST", enctype="multipart/form-data")
+    label(for="video") Video File
+    input#video(name="video", type="file", accept="video/*", required)
     input(
       name="title",
       type="text",
-      placeholder="Video Title",
-      value=video.title,
+      placeholder="Title",
       maxlength=80,
       required
     )
@@ -15,7 +17,6 @@ block content
       name="description",
       type="text",
       placeholder="Description",
-      value=video.description,
       minlength=20,
       required
     )
@@ -23,7 +24,6 @@ block content
       name="hashtags",
       type="text",
       placeholder="Hashtags, separated by comma.",
-      value=video.hashtags.join(),
       required
     )
-    input(value="Save", type="submit")
+    input(type="submit", value="Upload Video")

@@ -18,7 +18,7 @@ export const postJoin = async (req, res) => {
 
   const exists = await User.exists({ $or: [{ username }, { email }] });
 
-  if (exists) {
+  if (exists !== null) {
     return res.status(400).render("join", {
       pageTitle,
       errorMessage: "This username/email is already taken.",
@@ -115,7 +115,7 @@ export const finishGithubLogin = async (req, res) => {
     })
   ).json();
 
-  if (!("access_token" in tokenData)) {
+  if (!Object.hasOwn(tokenData, "access_token")) {
     return res.redirect("/login");
   }
 
@@ -146,13 +146,13 @@ export const finishGithubLogin = async (req, res) => {
     (email) => email.primary === true && email.verified === true,
   );
 
-  if (!emailObj) {
+  if (emailObj === undefined) {
     return res.redirect("/login");
   }
 
   let user = await User.findOne({ email: emailObj.email });
 
-  if (!user) {
+  if (user === null) {
     user = await User.create({
       name: userData.name,
       username: userData.login,
@@ -175,18 +175,27 @@ export const logout = (req, res) => {
   res.redirect("/");
 };
 
-export const see = (req, res) => res.send("See User");
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate("videos");
+
+  if (user === null) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+
+  res.render("users/profile", { pageTitle: user.name, user });
+};
 
 export const getEdit = (req, res) => {
-  res.render("edit-profile", { pageTitle: "Edit Profile" });
+  res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 };
 
 export const postEdit = async (req, res) => {
   const {
+    body: { name, email, username, location },
     session: {
       user: { _id, avatarUrl },
     },
-    body: { name, email, username, location },
     file,
   } = req;
 
@@ -208,15 +217,15 @@ export const postEdit = async (req, res) => {
 };
 
 export const getChangePassword = (req, res) => {
-  res.render("change-password", { pageTitle: "Change Password" });
+  res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
 export const postChangePassword = async (req, res) => {
   const {
+    body: { oldPassword, newPassword, newPasswordConfirm },
     session: {
       user: { _id, password },
     },
-    body: { oldPassword, newPassword, newPasswordConfirm },
   } = req;
 
   const ok = await compare(oldPassword, password);

@@ -1,13 +1,13 @@
-extends base
+extends ../base
 
 block content
-  if errorMessage
-    span= errorMessage
+  h4 Update Video
   form(method="POST")
     input(
       name="title",
       type="text",
-      placeholder="Title",
+      placeholder="Video Title",
+      value=video.title,
       maxlength=80,
       required
     )
@@ -15,6 +15,7 @@ block content
       name="description",
       type="text",
       placeholder="Description",
+      value=video.description,
       minlength=20,
       required
     )
@@ -22,6 +23,7 @@ block content
       name="hashtags",
       type="text",
       placeholder="Hashtags, separated by comma.",
+      value=video.hashtags.join(),
       required
     )
-    input(type="submit", value="Upload Video")
+    input(value="Save", type="submit")
