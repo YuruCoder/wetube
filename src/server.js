@@ -18,8 +18,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
 app.use(localsMiddleware);
 
-// routers
+// static
+app.use("/static", express.static("assets"));
 app.use("/uploads", express.static("uploads"));
+
+// routers
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
