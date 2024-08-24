@@ -16,9 +16,10 @@ app.set("views", process.cwd() + "/src/views");
 
 // middlewares
 app.use(logger);
-app.use(flash());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(sessionMiddleware);
+app.use(flash());
 app.use(localsMiddleware);
 
 // static
