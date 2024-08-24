@@ -80,6 +80,7 @@ export const getEdit = async (req, res) => {
   }
 
   if (video.owner.toString() !== user._id) {
+    req.flash("error", "Not authorized");
     return res.status(403).redirect("/");
   }
 
@@ -99,6 +100,7 @@ export const postEdit = async (req, res) => {
   }
 
   if (video.owner.toString() !== user._id) {
+    req.flash("error", "You are not the owner of the video");
     return res.status(403).redirect("/");
   }
 
@@ -108,6 +110,7 @@ export const postEdit = async (req, res) => {
     hashtags: Video.formatHashtags(hashtags),
   });
 
+  req.flash("success", "Changes saved");
   res.redirect(`/videos/${id}`);
 };
 

@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import flash from "express-flash";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
@@ -15,6 +16,7 @@ app.set("views", process.cwd() + "/src/views");
 
 // middlewares
 app.use(logger);
+app.use(flash());
 app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
 app.use(localsMiddleware);
