@@ -1,6 +1,34 @@
+import { S3Client } from "@aws-sdk/client-s3";
 import MongoStore from "connect-mongo";
 import session from "express-session";
 import multer from "multer";
+import s3Storage from "multer-s3";
+
+const s3Client = new S3Client({
+  region: "ap-northeast-1",
+  credentials: {
+    accessKeyId: process.env.AWS_KEY,
+    secretAccessKey: process.env.AWS_SECRET,
+  },
+});
+
+const s3Avatar = s3Storage({
+  s3: s3Client,
+  bucket: "wetube-yurucoder",
+  acl: "public-read",
+  key: (req, file, cb) => {
+    cb(null, `avatars/${req.session.user._id}/${Date.now().toString()}`);
+  },
+});
+
+const s3Video = s3Storage({
+  s3: s3Client,
+  bucket: "wetube-yurucoder",
+  acl: "public-read",
+  key: (req, file, cb) => {
+    cb(null, `videos/${req.session.user._id}/${Date.now().toString()}`);
+  },
+});
 
 /**
  * Cookie: 브라우저에 데이터를 저장하는 방법 중 하나로, 브라우저의 상태를 기억하기 위해 사용됨
@@ -49,14 +77,14 @@ export const publicOnlyMiddleware = (req, res, next) => {
 };
 
 export const uploadAvatarMiddleware = multer({
-  dest: "uploads/avatars/",
+  storage: s3Avatar,
   limits: {
     fileSize: 3000000,
   },
 });
 
 export const uploadVideoMiddleware = multer({
-  dest: "uploads/videos/",
+  storage: s3Video,
   limits: {
     fileSize: 100000000,
   },
